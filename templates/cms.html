@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Vids</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+</head>
+<body>
+	{% if msg %}
+	<div class="notification_box sm_padding_all">
+		<div class="text-right"><a href="" class="white" id="close_box">X</a></div>
+		{{ msg }}
+	</div>
+	{% endif %}
+	<div class="lg_padding"></div>
+
+	<h1 class="text-center bold">Videos</h1>
+
+	<div class="sm_padding text-center">
+		<button class="btn btn-default"><a href="{% url 'video_capture' %}?capture=1">Capture</a></button>
+		<button class="btn btn-default"><a href="{% url 'cms' %}?upload_all=1">Upload All</a></button>
+	</div>
+	{% for vid in videos %}
+	<div class="lg_padding"></div>
+	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1">
+
+		<div class="row">
+			<div class="col-sm-6">
+				<video controls class="vid_border_black">
+					<source src="{{ vid.vid_link }}" type='video/webm'>
+				</video>	
+			</div>
+			<div class="col-sm-6">
+
+				<div class="row">
+					<div class="col-sm-8 border_black sm_padding_all">
+						<h3 class="bold">{{ vid.name }}</h3> 
+						<div class="inline">
+							{% if vid.is_trimmed %}
+								<span class="label label-success">Trimmed</span>
+							{% else %}
+								<span class="label label-danger">Untrimmed</span>
+							{% endif %}
+
+							{% if vid.is_uploaded %}
+								<span class="label label-success">Uploaded</span>
+							{% else %}
+								<span class="label label-danger">Ready to upload</span>
+							{% endif %}
+						</div>
+						<div class="sm_padding"></div>
+						<form action="" method="POST" id="info_form">
+							{% csrf_token %}
+
+							<input type="hidden" name="vid_id" value="{{ vid.pk }}">
+
+							<div class="form-group">
+								<label>Name</label>
+								<input type="text" name="vid_name" id="vid_name" class="form-control" value="{{ vid.name }}">
+							</div>
+							<div class="form-group">
+								<label>Hero</label>
+								<div class="row">
+								<div class="col-sm-2">
+									<p class="green xs_padding">{{ vid.hero }}</p>
+								</div>
+								<div class="col-sm-10">
+								<select class="form-control" name="vid_hero" id="vid_hero">
+									<option selected="selected">
+										Genji
+									</option>
+									<option>Mccree</option>
+									<option>Pharah</option>
+									<option>Reaper</option>
+									<option>Soldier: 76</option>
+									<option>Sombra</option>
+									<option>Tracer</option>
+									<option>Bastion</option>
+									<option>Hanzo</option>
+									<option>Junkrat</option>
+									<option>Mei</option>
+									<option>Torbjorn</option>
+									<option>Widowmaker</option>
+									<option>D.VA</option>
+									<option>Reinhardt</option>
+									<option>Roadhog</option>
+									<option>Winston</option>
+									<option>Zarya</option>
+									<option>Ana</option>
+									<option>Lucio</option>
+									<option>Mercy</option>
+									<option>Symmetra</option>
+									<option>Zenyatta</option>
+								</select>
+								</div>
+								</div>
+								{# <input type="text" name="vid_hero" id="vid_hero" class="form-control" value="{{ vid.hero }}"> #}
+							</div>
+							<div class="form-group">
+								<label>Player</label>
+								<select class="form-control" id="vid_player" name="vid_player">
+									{% for player in players %}
+										{% if player == vid.player %}
+											<option selected="selected" value="{{ player.pk }}">
+										{% else %}
+											<option value="{{ player.pk }}">
+										{% endif %}
+										
+										{{ player.name }}
+										</option>
+									{% endfor %}
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label>Tags</label>
+								<input type="text" class="form-control" name="vid_tags" class="form-control" value="{{ vid.tags }}">
+							</div>
+							<div class="form-group">
+								<div class="page-header">
+								<label>Description</label>
+								</div>
+								{# <textarea class="form-control" name="vid_desc" form="info_form" rows="6">{{ vid.description }}</textarea> #}
+								<pre>
+									{{ vid.description }}
+								</pre>
+
+								{# <input type="text" class="form-control" name="vid_desc" class="form-control" value="{{ vid.description }}"> #}
+							</div>
+							<div class="sm_padding"></div>
+							<input type="submit" name="Submit" value="Save" class="btn btn-default">
+						</form>
+
+						
+					</div>
+					<div class="col-sm-4">
+						<div class="border_black sm_padding_all">
+						<h3 class="bold">Trim</h3>
+						<form action="" method="POST">
+							{% csrf_token %}
+							<input type="hidden" name="vid_id" value="{{ vid.pk }}">
+
+							<div class="form-group">
+								<label>Cue 1 Start</label>
+
+								<div class="form-inline">
+									<input type="text" name="vid_cue1_start_m" class="form-control cue_input" value={{ vid.vidcue_set.first.start }}>
+									<input type="text" name="vid_cue1_start_s" class="form-control cue_input">
+								</div>
+
+								<div class="sm_padding"></div>
+								
+								<label>Cue 1 End</label>
+								<div class="form-inline">
+									<input type="text" name="vid_cue1_end_m" class="form-control cue_input" value={{ vid.vidcue_set.first.end }}>
+									<input type="text" name="vid_cue1_end_s" class="form-control cue_input">
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label>Cue 2 Start</label>
+
+								<div class="form-inline">
+									{% if vid.num_of_cues == 2 %}
+										<input type="text" name="vid_cue2_start_m" class="form-control cue_input" value={{ vid.vidcue_set.last.start }}>
+									{% else %}
+										<input type="text" name="vid_cue2_start_m" class="form-control cue_input">
+									{% endif %}
+									
+									<input type="text" name="vid_cue2_start_s" class="form-control cue_input">
+								</div>
+								
+
+								<div class="sm_padding"></div>
+								
+								<label>Cue 2 End</label>
+								<div class="form-inline">
+									{% if vid.num_of_cues == 2 %}
+										<input type="text" name="vid_cue2_end_m" class="form-control cue_input" value={{ vid.vidcue_set.last.end }}>
+									{% else %}
+										<input type="text" name="vid_cue2_end_m" class="form-control cue_input">
+									{% endif %}									<input type="text" name="vid_cue2_end_s" class="form-control cue_input">
+								</div>
+
+							</div>
+							<input type="submit" value ="Trim" class="btn btn-default">
+						</form>	
+						</div>
+						<div class="sm_padding"></div>
+
+						{% if not vid.is_uploaded %}
+							<div class="border_black sm_padding_all">
+							<div class="row">
+							<div class="col-sm-6">
+							<form action="" method="POST">{% csrf_token %}
+								<input type="submit" value ="Upload" class="btn btn-default" id="upload_button">
+								<img src="{% static 'img/loadin.gif' %}" id="loading" width="40px" hidden>
+								<input type="hidden" name="vid_id" value="{{ vid.pk }}">
+								<input type="hidden" name="vid_upload" value="1">
+							</form>		
+							</div>
+							<div class="col-sm-6">
+							<form action="" method="POST">{% csrf_token %}
+								<input type="submit" value ="Delete" class="btn btn-danger" id="delete_button">
+								<img src="{% static 'img/loadin.gif' %}" id="loading" width="40px" hidden>
+								<input type="hidden" name="vid_id" value="{{ vid.pk }}">
+								<input type="hidden" name="vid_delete" value="1">
+							</form>	
+							</div>	
+							</div>
+							</div>
+						{% endif %}
+
+						
+					</div>
+				</div>
+
+
+
+			</div>
+		</div>		
+		</div>
+	</div>
+
+	{% endfor %}
+	
+<script src="https://fb.me/react-0.14.1.js"></script>
+<!-- The ReactDOM Library -->
+<script src="https://fb.me/react-dom-0.14.1.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript">
+
+  	$('video').on('click', function(){
+  		this.load();
+  		this.play();
+  		console.log('asd')
+  	})
+  	$('#upload_button').click(function(){
+  		$('#loading').show()
+  	})
+  	$('.notification_box').click(function(e){
+  		e.preventDefault();
+  		$('.notification_box').fadeOut(300);
+  	})
+  </script>
+</body>
+</html>
