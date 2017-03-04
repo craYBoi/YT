@@ -66,7 +66,7 @@ class Ytvideo(models.Model):
 		# get all the cues and trim the vid
 		cues = self.vidcue_set.all()
 		if cues:
-			for cue in cues:
+			for i, cue in enumerate(cues):
 				
 				start = cue.start
 				end = cue.end
@@ -94,7 +94,7 @@ class Ytvideo(models.Model):
 
 
 				vid_name = self.name
-				out_name = vid_name.split('.')[0] + str(cue.pk) + '.mkv'
+				out_name = vid_name.split('.')[0] + str(cue.pk) + str(i) + '.mkv'
 
 				try:
 					subprocess.call(['sh', 'video/scripts/trim.sh', vid_name, start, duration, IN_FOLDER, OUT_FOLDER, out_name])
@@ -132,8 +132,8 @@ class Ytvideo(models.Model):
 
 class Vidcue(models.Model):
 	video = models.ForeignKey(Ytvideo)
-	start = models.CharField(max_length=2)
-	end = models.CharField(max_length=2)
+	start = models.CharField(max_length=10)
+	end = models.CharField(max_length=10)
 
 	def __unicode__(self):
 		return self.video.name

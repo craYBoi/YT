@@ -30,18 +30,27 @@ def cms(request):
 
 	print videos
 	context = {
-		'videos': videos[:3],
+		'videos': videos[:5],
 		'players': players,
 	}
 
 	# upload all
 	if request.GET and request.GET.get('upload_all'):
+
+		vids_string = ''
+
 		vids = Ytvideo.objects.filter(is_trimmed=True).filter(is_uploaded=False)
 		for vid in vids:
 			vid.is_uploaded = True
 			vid.save()
-		for vid in vids:
-			vid.upload()
+
+			vids_string = vids_string + vid.trimmed_path + ' '
+		# for vid in vids:
+		# 	vid.upload()
+
+		vids_string = vids_string.strip()
+		subprocess.call(['sh', 'video/scripts/mass_upload.sh'])
+		
 
 
 	# delete vid
@@ -138,7 +147,7 @@ def cms(request):
 		vid.trim()
 
 		context['msg'] = 'Trimmed successfully. ' + vid.name
-		context['videos'] = Ytvideo.objects.filter(is_uploaded=False).order_by('-timestamp')[:3]
+		context['videos'] = Ytvideo.objects.filter(is_uploaded=False).order_by('-timestamp')[:5]
 
 
 	if request.POST and request.POST.get('vid_upload'):
