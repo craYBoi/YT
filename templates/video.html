@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+  	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+  	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <title>{{ video.name }}</title>
+  </head>
+  <body>
+
+    <div class="text-center lg_padding">
+
+
+    <form class="" action="{% url 'video_open' %}" method="get">
+      <input type="hidden" value="{{ video.pk }}" name="video_id"/>
+      <button type="submit" name="button" class="btn btn-default">Open</button>
+    </form>
+    </div>
+
+    <div class="lg_padding">
+
+    </div>
+
+    {% for sc in video.screenshot_set.all %}
+
+      {% cycle "<div class='row'>" "" %}
+        <div class="col-sm-6">
+          <img src="{{ sc.path }}" class="img-responsive" alt="">
+          <p>{{ sc.path }}</p>
+        </div>
+
+      {% cycle "" "</div>" %}
+
+    {% endfor %}
+
+    <form class="" action="{% url 'video_open' %}" method="get">
+      <input type="hidden" value="{{ video.pk }}" name="video_id"/>
+      <button type="submit" name="button" class="btn btn-default">Open</button>
+    </form>
+
+
+
+  </body>
+</html>

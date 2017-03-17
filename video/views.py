@@ -3,12 +3,15 @@ from django.views.generic import ListView
 from django.views.generic import FormView
 from django.shortcuts import redirect
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 import subprocess
 import os
 import string
 
 import core
-from .models import Ytvideo, Player, Vidcue
+from .models import Ytvideo, Player, Vidcue, Hero
+from .utils import mass_screenshot
 
 def capture(request):
 	context = {
@@ -16,10 +19,16 @@ def capture(request):
 
 	if request.GET:
 		if request.GET.get('capture'):
-			m = core.Machine()
-			m.run()
-			
-			
+			screen = int(request.GET.get('capture'))
+			# secondary screen
+			if screen == 1:
+				m = core.Machine(screen=1)
+				m.run(screen)
+			if screen == 2:
+				m = core.Machine(screen=2)
+				m.run(screen)
+
+
 	return render(request, 'capture.html', context)
 
 
@@ -27,10 +36,13 @@ def cms(request):
 
 	videos = Ytvideo.objects.filter(is_uploaded=False).order_by('-timestamp')
 	players = Player.objects.all()
+	heros = Hero.objects.order_by('name')
 
-	print videos
+
+	paginator = Paginator(videos, 3)
+	page = request.GET.get('page')
+
 	context = {
-		'videos': videos[:5],
 		'players': players,
 	}
 
@@ -50,7 +62,7 @@ def cms(request):
 
 		vids_string = vids_string.strip()
 		subprocess.call(['sh', 'video/scripts/mass_upload.sh'])
-		
+
 
 
 	# delete vid
@@ -100,8 +112,7 @@ def cms(request):
 
 		vid.save()
 
-
-		context['videos'] = Ytvideo.objects.filter(is_uploaded=False).order_by('-timestamp')[:3]
+		videos = Ytvideo.objects.filter(is_uploaded=False).order_by('-timestamp')
 		context['msg'] = 'Video has been successfully updated.\n' + vid.name
 
 
@@ -130,7 +141,7 @@ def cms(request):
 				start=vid_cue1_start,
 				end=vid_cue1_end,
 				)
-		
+
 		if vid_cue2_start_m and vid_cue2_start_s and vid_cue2_end_m and vid_cue2_end_s:
 
 			# do datetime conversion
@@ -146,9 +157,13 @@ def cms(request):
 		# trim
 		vid.trim()
 
-		context['msg'] = 'Trimmed successfully. ' + vid.name
-		context['videos'] = Ytvideo.objects.filter(is_uploaded=False).order_by('-timestamp')[:5]
+		# analyze hero, only for 1 vid
+		if vid.is_analyzed:
+			vid.compute_hero(vid_cue1_start, vid_cue1_end)
 
+
+		context['msg'] = 'Trimmed successfully. ' + vid.name
+		videos = Ytvideo.objects.filter(is_uploaded=False).order_by('-timestamp')
 
 	if request.POST and request.POST.get('vid_upload'):
 
@@ -158,4 +173,44 @@ def cms(request):
 		vid.upload()
 		context['msg'] = 'Uploaded successfully. ' + vid.name
 
+	if request.POST and request.POST.get('analyze'):
+		mass_screenshot()
+		context['msg'] = 'Analyzed done!.. '
+
+
+	try:
+		videos = paginator.page(page)
+	except PageNotAnInteger:
+		videos = paginator.page(1)
+	except EmptyPage:
+		videos = paginator.page(paginator.num_pages)
+
+
+	context['videos'] = videos
 	return render(request, 'cms.html', context)
+
+
+def video(request, vid_id):
+
+	vid = Ytvideo.objects.get(pk=vid_id)
+	context = {
+		'video': vid,
+	}
+
+
+	return render(request, 'video.html', context)
+
+
+def open(request):
+
+	context = {}
+
+	if request.GET:
+		pk = request.GET.get('video_id')
+		vid = Ytvideo.objects.get(pk=pk)
+
+		context['video'] = vid
+		r = vid.open_vlc()
+
+
+	return render(request, 'video.html', context)

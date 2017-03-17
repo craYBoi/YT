@@ -20,6 +20,8 @@ from video import views as video_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-		url(r'^capture/', video_views.capture, name='video_capture'),
-		url(r'^cms/', video_views.cms, name='cms'),
+	url(r'^capture/', video_views.capture, name='video_capture'),
+	url(r'^cms/$', video_views.cms, name='cms'),
+    url(r'^cms/(?P<vid_id>[0-9]+)/$', video_views.video, name='video_detail'),
+    url(r'^cms/open/$', video_views.open, name='video_open'),
 ]

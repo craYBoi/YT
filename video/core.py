@@ -15,8 +15,10 @@ import csv
 from .models import Ytvideo, Player
 
 class Machine():
-	def __init__(self):
+	def __init__(self, screen=1):
 		self.s = sched.scheduler(time.time, time.sleep)
+		# screen 1 is secondary ASUS, 2 is primary Acer
+		self.screen = screen
 
 	def get_html_content(self, url):
 		b = webdriver.PhantomJS()
@@ -74,8 +76,18 @@ class Machine():
 		# loop through all the accounts, if offline, jump to the next, jump back to the first when depleted
 		max_c = len(urls)
 
-		url = urls[curr_c]
-		print 'Working on ' + str(url) + '...'
+
+		# MAJOR EDIT
+		# url = urls[curr_c]
+		# print 'Working on ' + str(url) + '...'
+
+		player = urls[curr_c]
+
+
+		print 'Working on ' + player.name + '...'
+		url = player.url
+
+
 
 		flag = self.channel_status(url)
 		if flag:
@@ -83,7 +95,17 @@ class Machine():
 			print 'The Channel is Live!!'
 
 			# open the browser and make it fullscreen
-			b = webdriver.Chrome(os.path.join(os.path.dirname(__file__), 'chromedriver'))
+
+
+			if self.screen == 1:
+				b = webdriver.Chrome(os.path.join(os.path.dirname(__file__), 'chromedriver'))
+			else:
+				b = webdriver.Firefox()
+
+			# 1 is secondary ASUS
+			if self.screen == 1:
+				b.set_window_position(1920, 0)
+
 			b.implicitly_wait(15)
 
 			# [DEBUG]
@@ -97,7 +119,7 @@ class Machine():
 			# make sure to change the quality to source
 			b.find_element_by_class_name('player-button--settings').send_keys(Keys.ENTER)
 
-		
+
 			el = b.find_element_by_class_name('player-menu__item-control')
 			el.send_keys(Keys.ENTER)
 			sel = Select(b.find_element_by_class_name('player-menu__item-control'))
@@ -109,7 +131,11 @@ class Machine():
 				# close and recall this method in 5 secs
 				next_c = self.get_next_index(curr_c, max_c)
 
-				url = urls[next_c]
+				# MAJOR EDIT
+				# url = urls[next_c]
+				player = urls[next_c]
+				url = player.url
+
 
  				print 'Other Host Hosting.. Try  ' + str(url) + ' in 5 secs'
 				self.s.enter(5, 1, self.loop_check, (urls, next_c,))
@@ -138,22 +164,39 @@ class Machine():
 			player = Player.objects.get(url=url)
 			vid_path = '/hdd/things/captures/' + captured_name
 			link_path = '/static/links/' + captured_name
-			
+
 			Ytvideo.objects.create(
 				name = captured_name,
 				player = player,
 				vid_path = vid_path,
 				vid_link = link_path,
 			)
-			
-			# create the sym link to that video
 
+			# create the sym link to that video
 			r = subprocess.call(['sh', 'video/scripts/create_link.sh', vid_path, link_path])
+
+
+
 			if not r:
 				print 'Problem generating the vid link'
 
 			# TODO add timestamp on the record name, make it unique and easy to track
-			subprocess.call(['sh', 'video/scripts/record.sh', captured_name])
+
+			# screen ASUS is 1
+			if self.screen == 1:
+				vid_input_mod = "+1920,0"
+			else:
+				vid_input_mod = ''
+
+			# update the player recording flag
+			player.recording = True
+			player.save()
+
+			# record
+			subprocess.call(['sh', 'video/scripts/record.sh', captured_name, vid_input_mod])
+
+			player.recording = False
+			player.save()
 
 			# 20 second buffer time at the end
 			time.sleep(10)
@@ -161,7 +204,13 @@ class Machine():
 
 			# now work on the next one
 			next_c = self.get_next_index(curr_c, max_c)
-			url = urls[next_c]
+
+			# MAJOR EDIT
+			# url = urls[next_c]
+			player = urls[next_c]
+			url = player.url
+
+
 
 			# close the driver
 			b.close()
@@ -173,17 +222,28 @@ class Machine():
 			# close and recall this method in 5 secs
 			next_c = self.get_next_index(curr_c, max_c)
 
-			url = urls[next_c]
+			# MAJOR EDIT
+			# url = urls[next_c]
+			player = urls[next_c]
+			url = player.url
 
  			print 'Offline.. Try again on ' + str(url) + ' in 5 secs'
 			self.s.enter(5, 1, self.loop_check, (urls, next_c,))
 
 
-	def run(self):
+	def run(self, screen):
 
 		# get the urls
-		players = Player.objects.filter(active=True)
-		urls = [p.url for p in players]
-		
-		self.loop_check(urls)
+
+		# ASUS for active players
+
+		players = Player.objects.filter(active=True).exclude(recording=True)
+		# if screen == 1:
+		# 	players = Player.objects.filter(active=True)
+		# else:
+		# 	players = Player.objects.filter(active=False)
+		# urls = [p.url for p in players]
+
+		# self.loop_check(urls)
+		self.loop_check(players)
 		self.s.run()

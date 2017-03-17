@@ -3,7 +3,7 @@
 <html>
 <head>
 	<title>Vids</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 </head>
@@ -19,9 +19,28 @@
 	<h1 class="text-center bold">Videos</h1>
 
 	<div class="sm_padding text-center">
-		<button class="btn btn-default"><a href="{% url 'video_capture' %}?capture=1">Capture</a></button>
+		<button class="btn btn-default"><a href="{% url 'video_capture' %}?capture=1">Capture ASUS</a></button>
+		<button class="btn btn-default"><a href="{% url 'video_capture' %}?capture=2">Capture ACER</a></button>
+		<button class="btn btn-default"><a href="{% url 'cms' %}?analyze=1">Analyze</a></button>
 		<button class="btn btn-default"><a href="{% url 'cms' %}?upload_all=1">Upload All</a></button>
 	</div>
+
+	<div class="pagination text-center">
+			<span class="step-links">
+					{% if videos.has_previous %}
+							<a href="?page={{ videos.previous_page_number }}">previous</a>
+					{% endif %}
+
+					<span class="current">
+							Page {{ videos.number }} of {{ videos.paginator.num_pages }}.
+					</span>
+
+					{% if videos.has_next %}
+							<a href="?page={{ videos.next_page_number }}">next</a>
+					{% endif %}
+			</span>
+	</div>
+
 	{% for vid in videos %}
 	<div class="lg_padding"></div>
 	<div class="row">
@@ -31,14 +50,21 @@
 			<div class="col-sm-6">
 				<video controls class="vid_border_black">
 					<source src="{{ vid.vid_link }}" type='video/webm'>
-				</video>	
+				</video>
 			</div>
 			<div class="col-sm-6">
 
 				<div class="row">
 					<div class="col-sm-8 border_black sm_padding_all">
-						<h3 class="bold">{{ vid.name }}</h3> 
+						<a href="{% url 'video_detail' vid.pk %}"><h3 class="bold">{{ vid.pk }} - {{ vid.name }}</h3></a>
 						<div class="inline">
+
+							{% if vid.is_analyzed %}
+								<span class="label label-success">Analyzed</span>
+							{% else %}
+								<span class="label label-danger">Unanalyzed</span>
+							{% endif %}
+
 							{% if vid.is_trimmed %}
 								<span class="label label-success">Trimmed</span>
 							{% else %}
@@ -50,6 +76,7 @@
 							{% else %}
 								<span class="label label-danger">Ready to upload</span>
 							{% endif %}
+
 						</div>
 						<div class="sm_padding"></div>
 						<form action="" method="POST" id="info_form">
@@ -108,7 +135,7 @@
 										{% else %}
 											<option value="{{ player.pk }}">
 										{% endif %}
-										
+
 										{{ player.name }}
 										</option>
 									{% endfor %}
@@ -134,7 +161,7 @@
 							<input type="submit" name="Submit" value="Save" class="btn btn-default">
 						</form>
 
-						
+
 					</div>
 					<div class="col-sm-4">
 						<div class="border_black sm_padding_all">
@@ -152,7 +179,7 @@
 								</div>
 
 								<div class="sm_padding"></div>
-								
+
 								<label>Cue 1 End</label>
 								<div class="form-inline">
 									<input type="text" name="vid_cue1_end_m" class="form-control cue_input" value={{ vid.vidcue_set.first.end }}>
@@ -169,13 +196,13 @@
 									{% else %}
 										<input type="text" name="vid_cue2_start_m" class="form-control cue_input">
 									{% endif %}
-									
+
 									<input type="text" name="vid_cue2_start_s" class="form-control cue_input">
 								</div>
-								
+
 
 								<div class="sm_padding"></div>
-								
+
 								<label>Cue 2 End</label>
 								<div class="form-inline">
 									{% if vid.num_of_cues == 2 %}
@@ -187,7 +214,7 @@
 
 							</div>
 							<input type="submit" value ="Trim" class="btn btn-default">
-						</form>	
+						</form>
 						</div>
 						<div class="sm_padding"></div>
 
@@ -200,7 +227,7 @@
 								<img src="{% static 'img/loadin.gif' %}" id="loading" width="40px" hidden>
 								<input type="hidden" name="vid_id" value="{{ vid.pk }}">
 								<input type="hidden" name="vid_upload" value="1">
-							</form>		
+							</form>
 							</div>
 							<div class="col-sm-6">
 							<form action="" method="POST">{% csrf_token %}
@@ -208,32 +235,49 @@
 								<img src="{% static 'img/loadin.gif' %}" id="loading" width="40px" hidden>
 								<input type="hidden" name="vid_id" value="{{ vid.pk }}">
 								<input type="hidden" name="vid_delete" value="1">
-							</form>	
-							</div>	
+							</form>
+							</div>
 							</div>
 							</div>
 						{% endif %}
 
-						
+
 					</div>
 				</div>
 
 
 
 			</div>
-		</div>		
+		</div>
 		</div>
 	</div>
 
 	{% endfor %}
-	
-<script src="https://fb.me/react-0.14.1.js"></script>
+
+	{# paginator #}
+	<div class="pagination text-center">
+	    <span class="step-links">
+	        {% if videos.has_previous %}
+	            <a href="?page={{ videos.previous_page_number }}">previous</a>
+	        {% endif %}
+
+	        <span class="current">
+	            Page {{ videos.number }} of {{ videos.paginator.num_pages }}.
+	        </span>
+
+	        {% if videos.has_next %}
+	            <a href="?page={{ videos.next_page_number }}">next</a>
+	        {% endif %}
+	    </span>
+	</div>
+
+
+{# <script src="https://fb.me/react-0.14.1.js"></script> #}
 <!-- The ReactDOM Library -->
-<script src="https://fb.me/react-dom-0.14.1.js"></script>
+{# <script src="https://fb.me/react-dom-0.14.1.js"></script> #}
+{# <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script> #}
 <script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
+  src="{% static 'js/jquery.js' %}"></script>
   <script type="text/javascript">
 
   	$('video').on('click', function(){
@@ -248,6 +292,7 @@
   		e.preventDefault();
   		$('.notification_box').fadeOut(300);
   	})
+
   </script>
 </body>
 </html>
