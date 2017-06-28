@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+  <head>
+    <title>Vids</title>
+  	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+  	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+  	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+
+    <meta charset="utf-8">
+
+    <title>CMS 2</title>
+  </head>
+  <body>
+
+    <div class="container">
+
+      <h1 class="bold">Videos</h1>
+      <div class="pagination text-center">
+    		<span class="step-links">
+    			{% if videos.has_previous %}
+    				<a href="?page={{ videos.previous_page_number }}">previous</a>
+    			{% endif %}
+
+    			<span class="current">
+    			      Page {{ videos.number }} of {{ videos.paginator.num_pages }}.
+    			</span>
+
+    			{% if videos.has_next %}
+    				<a href="?page={{ videos.next_page_number }}">next</a>
+    			{% endif %}
+    		</span>
+    	</div>
+
+      {% for video in videos %}
+          <a href="{% url 'video_detail2' video.pk %}"><h1>{{ video.pk }} - {{ video.name }}</h1></a>
+          <div class="row">
+      			<div class="col-sm-6">
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" value="{{ video.pk }}" name="video_id" id="video_id"/>
+                <button type="submit" name="button" class="btn btn-danger" id="video_open_button">Delete</button>
+              </form>
+      			</div>
+          </div>
+
+
+      {% endfor %}
+
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+</html>

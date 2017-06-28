@@ -1,5 +1,12 @@
-from .models import Ytvideo
+from .models import VidImage
+from PIL import Image
+import os
 
-a = Ytvideo.objects.get(pk=409)
+def open_vidimage():
+    a = VidImage.objects.first()
 
-a.analyze()
+    print('Current Dir: %s') % (os.getcwd())
+    print('Image Path: %s') % (a.path)
+
+    im = Image.open(a.path)
+    im.show()

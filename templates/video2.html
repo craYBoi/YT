@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+  	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+  	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css"> -->
+    <script
+      src="https://code.jquery.com/jquery-2.2.4.min.js"
+      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+      crossorigin="anonymous"></script>
+    <title>{{ video.name }}</title>
+  </head>
+  <body>
+
+    <div class="">
+      <div class="text-center lg_padding">
+        <form class="" method="get">
+          <input type="hidden" value="{{ video.pk }}" name="video_id"/>
+          <button type="submit" name="button" class="btn btn-default" id="{{ video.pk }}_open_button">Open</button>
+        </form>
+      </div>
+
+
+    {% for cue in cues %}
+
+        <div class="lg_padding"></div>
+        <div class="row">
+          <div class="col-sm-6 border_black">
+            <h3> {{ cue.video.name }}
+            </h3>
+            <p><span id="{{ cue.pk }}_start_end">{{ cue.start }} - {{ cue.end }}</span> |
+              {% if cue.is_updated %}
+                <span class="label label-primary">updated</span>
+              {% else %}
+                <span class="label label-warning" id="{{ cue.pk }}_update_label">not updated</span>
+              {% endif %}
+              {% if cue.is_trimmed %}
+                <span class="label label-primary">trimmed</span>
+              {% else %}
+                <span class="label label-warning" id="{{ cue.pk }}_trim_label">untrimmed</span>
+              {% endif %}
+              {% if cue.is_uploaded %}
+                <span class="label label-primary">uploaded</span>
+              {% else %}
+                <span class="label label-warning" id="{{ cue.pk }}_upload_label">not uploaded</span>
+              {% endif %}</p>
+            <div class="row">
+              <div class="col-sm-4">
+                <h3>Stats</h3>
+                <ul>
+                  <li>Hero: {{ cue.hero }}</li>
+                  <li>Map: </li>
+                  <li>Elims: {{ cue.elim }}</li>
+                  <li>Death: {{ cue.death }}</li>
+                  <li>{{ cue.elim_death_ratio }}</li>
+                </ul>
+
+              </div>
+
+              <div class="col-sm-8">
+                <h3>Operation</h3>
+
+                <form class="row" method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="videocue_id" value="{{ cue.pk }}">
+                  <div class="col-sm-4">
+                    <input type="text" value="" class="form-control" name="videocue_start" id="{{ cue.pk }}_vidcue_start">
+                  </div>
+                  <div class="col-sm-4">
+                    <input type="text" value="" class="form-control" name="videocue_end" id="{{ cue.pk }}_vidcue_end">
+                  </div>
+                  <div class="col-sm-4">
+                    <button type="submit" name="button" class="btn btn-default" id="{{ cue.pk }}_update_button">Update</button>
+                  </div>
+                </form>
+
+                <div class="sm_padding">
+                </div>
+
+                <div class="input_inline">
+                  <form class="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="videocue_id" value="{{ cue.pk }}">
+                    <input type="hidden" name="videocue_trim" value="1">
+                    <button type="submit" name="button" class="btn btn-default" id="{{ cue.pk }}_trim_button">Trim</button>
+                  </form>
+                  <form class="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="videocue_id" value="{{ cue.pk }}">
+                    <input type="hidden" name="videocue_upload" value="1">
+                    <button type="submit" name="button" class="btn btn-default" id="{{ cue.pk }}_upload_button">Upload</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-xs-12">
+              <h3>Info</h3>
+              <p>Title: <span id="{{ cue.pk }}_title_label">{{ cue.title }}</span></p>
+              <form class="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="videocue_id" value="{{ cue.pk }}">
+                <input type="text" name="videocue_title" value="" class="form-control" id="{{ cue.pk }}_title">
+                <label class="sm_padding">Hero: <span id="{{ cue.pk }}_hero_label">{{ cue.hero }}</span></label>
+                <select class="form-control" name="videocue_hero" id="{{ cue.pk }}_hero">
+									<option selected="selected">
+										Genji
+									</option>
+									<option>Mccree</option>
+                  <option>Orisa</option>
+									<option>Pharah</option>
+									<option>Reaper</option>
+									<option>Soldier: 76</option>
+									<option>Sombra</option>
+									<option>Tracer</option>
+									<option>Bastion</option>
+									<option>Hanzo</option>
+									<option>Junkrat</option>
+									<option>Mei</option>
+									<option>Torbjorn</option>
+									<option>Widowmaker</option>
+									<option>D.VA</option>
+									<option>Reinhardt</option>
+									<option>Roadhog</option>
+									<option>Winston</option>
+									<option>Zarya</option>
+									<option>Ana</option>
+									<option>Lucio</option>
+									<option>Mercy</option>
+									<option>Symmetra</option>
+									<option>Zenyatta</option>
+								</select>
+
+                <label class="sm_padding">Description</label>
+                <pre id="{{ cue.pk }}_desc_text">
+                  {{ cue.desc }}
+                </pre>
+                <button type="submit" name="button" class="btn btn-default" id="{{ cue.pk }}_info_button">update</button>
+              </form>
+
+
+              <div class="sm_padding">
+              </div>
+
+
+            </div>
+
+
+          </div>
+          <div class="col-sm-6">
+            <h2>{{ cue.end_sc.name }}</h2>
+            <img src="{{ cue.end_sc.path }}" class="img-responsive">
+            <form class="sm_padding" method="get">
+              <input type="hidden" value="{{ video.pk }}" name="video_id"/>
+              <button type="submit" name="button" class="btn btn-default" id="{{ video.id }}_open_button">Open</button>
+            </form>
+          </div>
+        </div>
+
+
+    {% endfor %}
+
+    <!--
+    {% for sc in video.videosc_set.all %}
+      {% cycle "<div class='row'>" "" ""%}
+        <div class="col-sm-4">
+          <img src="{{ sc.path }}" class="img-responsive" alt="">
+          <p>{{ sc.path }}</p>
+        </div>
+
+      {% cycle "" "" "</div>" %}
+    {% endfor %}
+  -->
+    </div>
+  </body>
+  <script type="text/javascript">
+    $(":button").click(function(e){
+      e.preventDefault();
+
+
+      var pk = this.id.split("_")[0];
+      var func = this.id.split("_")[1];
+
+      // open button
+      if (func == "open"){
+        console.log('Hey!')
+        $.ajax({
+          url: "{% url 'video_ajax_open' %}",
+          type: "POST",
+          data: {
+            'video_id': pk,
+          },
+          dataType: 'json',
+          success: function(data) {
+            console.log('Success');
+          },
+
+        })
+      }
+
+      if (func == "update"){
+
+        var vidcue_start_id = "#" + pk + "_vidcue_start";
+        var vidcue_end_id = "#" + pk + "_vidcue_end";
+        var vidcue_update_label = "#" + pk + "_update_label";
+
+        var vidcue_start_end_str = "#" + pk + "_start_end";
+        // console.log(vidcue_start_id);
+        // console.log($(vidcue_start_id).val());
+
+        // console.log($(vidcue_start_id).val() + " - " + $(vidcue_end_id).val());
+
+        $.ajax({
+          url: "{% url 'video_ajax_update' %}",
+          type: "POST",
+          data: {
+            'video_id': pk,
+            'videocue_start': $(vidcue_start_id).val(),
+            'videocue_end': $(vidcue_end_id).val(),
+          },
+          dataType: 'json',
+          success: function(data) {
+            console.log('Success');
+            $(vidcue_update_label).html('updated');
+            $(vidcue_update_label).toggleClass('label-warning label-primary');
+            $(vidcue_start_end_str).html($(vidcue_start_id).val() + " - " + $(vidcue_end_id).val());
+          },
+        })
+      }
+
+
+      if (func == "trim"){
+
+        var vidcue_trim_label = "#" + pk + "_trim_label";
+
+        console.log('Trimming')
+        $.ajax({
+          url: "{% url 'video_ajax_trim' %}",
+          type: "POST",
+          data: {
+            'video_id': pk,
+          },
+          dataType: 'json',
+          success: function(data) {
+            console.log('Success');
+            $(vidcue_trim_label).html('trimmed');
+            $(vidcue_trim_label).toggleClass('label-warning label-primary');
+          },
+
+        })
+      }
+
+
+      if (func == "upload"){
+
+        var vidcue_upload_label = "#" + pk + "_upload_label";
+
+        console.log('Uploading')
+        $.ajax({
+          url: "{% url 'video_ajax_upload' %}",
+          type: "POST",
+          data: {
+            'video_id': pk,
+          },
+          dataType: 'json',
+          success: function(data) {
+            console.log('Success');
+            $(vidcue_upload_label).html('uploaded');
+            $(vidcue_upload_label).toggleClass('label-warning label-primary');
+          },
+
+        })
+      }
+
+      if (func == "info"){
+
+        var vidcue_title_label = "#" + pk + "_title_label";
+        var vidcue_title_id = "#" + pk + "_title";
+        var vidcue_hero_label = "#" + pk + "_hero_label";
+        var vidcue_hero_id = "#" + pk + "_hero";
+        var vidcue_desc_label = "#" + pk + "_desc_text";
+
+
+        console.log('Changing Info...')
+        $.ajax({
+          url: "{% url 'video_ajax_info' %}",
+          type: "POST",
+          data: {
+            'video_id': pk,
+            'video_hero': $(vidcue_hero_id).val(),
+            'video_title': $(vidcue_title_id).val(),
+          },
+          dataType: 'json',
+          success: function(data) {
+            console.log('Success');
+            $(vidcue_title_label).html(data['vidcue_title']);
+            $(vidcue_hero_label).html(data['vidcue_hero']);
+            $(vidcue_desc_label).html(data['vidcue_desc']);
+          },
+
+        })
+      }
+    })
+
+
+  </script>
+</html>

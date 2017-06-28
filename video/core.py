@@ -1,4 +1,8 @@
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from bs4 import BeautifulSoup
@@ -88,8 +92,17 @@ class Machine():
 		url = player.url
 
 
+		# in case Phantom JS crashes
+		try:
+			flag = self.channel_status(url)
+		except:
+			next_c = self.get_next_index(curr_c, max_c)
 
-		flag = self.channel_status(url)
+			player = urls[next_c]
+			url = player.url
+			self.s.enter(5, 1, self.loop_check, (urls, next_c,))
+
+		# start the script
 		if flag:
 			# call webdriver with Chrome and record
 			print 'The Channel is Live!!'
@@ -98,50 +111,130 @@ class Machine():
 
 
 			if self.screen == 1:
-				b = webdriver.Chrome(os.path.join(os.path.dirname(__file__), 'chromedriver'))
-			else:
-				b = webdriver.Firefox()
 
-			# 1 is secondary ASUS
-			if self.screen == 1:
+				b = webdriver.Chrome(os.path.join(os.path.dirname(__file__), 'chromedriver'))
 				b.set_window_position(1920, 0)
 
-			b.implicitly_wait(15)
+			else:
+				b = webdriver.Firefox()
+				b.set_window_position(0, 0)
+				b.set_window_size(960, 1080)
+
+
+			delay = 10
+			# b.implicitly_wait(15)
 
 			# [DEBUG]
-			print '[DEBUG] HERE'
-
+			print 'BEFORE GET'
 			b.maximize_window()
-
 			b.get(url)
 
 
+
+			# b.refresh()
+
+			# b.implicitly_wait(10)
+			print 'FINDING ELEMENT'
 			# make sure to change the quality to source
-			b.find_element_by_class_name('player-button--settings').send_keys(Keys.ENTER)
+
+			if self.screen == 2:
+				b.set_window_size(960, 1080)
+
+			# TEMP
+			# try:
+
+			flag = True
+			count = 0
+			while flag:
+				try:
+			# do this twice to refresh
+					try:
+						WebDriverWait(b, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'js-control-playpause-button')))
+
+						count += 1
+						# escape if count exceed 10
+
+						if count > 10:
+							next_c = self.get_next_index(curr_c, max_c)
+							player = urls[next_c]
+							url = player.url
+							b.close()
+							b.quit()
+							self.s.enter(5, 1, self.loop_check, (urls, next_c,))
+
+						print 'Finding js control playpause button...'
 
 
-			el = b.find_element_by_class_name('player-menu__item-control')
-			el.send_keys(Keys.ENTER)
-			sel = Select(b.find_element_by_class_name('player-menu__item-control'))
 
-			# for situations when other is hosting
-			try:
-				sel.select_by_visible_text('Source')
-			except:
-				# close and recall this method in 5 secs
-				next_c = self.get_next_index(curr_c, max_c)
+					except TimeoutException, e:
+						raise e
+					else:
+						time.sleep(5)
+						b.find_element_by_class_name('js-control-playpause-button').send_keys(Keys.ENTER)
+			 			b.find_element_by_class_name('js-control-playpause-button').send_keys(Keys.ENTER)
 
-				# MAJOR EDIT
-				# url = urls[next_c]
-				player = urls[next_c]
-				url = player.url
+						# hit mature button
+						try:
+							b.find_element_by_class_name('js-player-mature-accept').send_keys(Keys.ENTER)
+						except:
+							pass
+
+					try:
+						WebDriverWait(b, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'player-button--settings')))
+					except TimeoutException, e:
+						raise e
+					else:
+						b.find_element_by_class_name('player-button--settings').send_keys(Keys.ENTER)
 
 
- 				print 'Other Host Hosting.. Try  ' + str(url) + ' in 5 secs'
-				self.s.enter(5, 1, self.loop_check, (urls, next_c,))
+						el = b.find_element_by_class_name('player-menu__item-control')
+						el.send_keys(Keys.ENTER)
+						sel = Select(b.find_element_by_class_name('player-menu__item-control'))
 
-			# full screen
-			b.find_element_by_class_name('player-button--fullscreen').send_keys(Keys.ENTER)
+
+					# for situations when other is hosting
+						sel.select_by_visible_text('Source')
+
+						# full screen
+						b.find_element_by_class_name('player-button--fullscreen').send_keys(Keys.ENTER)
+
+						# hit mature button
+						try:
+							b.find_element_by_class_name('js-player-mature-accept').send_keys(Keys.ENTER)
+						except:
+							pass
+				except:
+					try:
+						b.refresh()
+					except:
+						next_c = self.get_next_index(curr_c, max_c)
+
+						player = urls[next_c]
+						url = player.url
+						self.s.enter(5, 1, self.loop_check, (urls, next_c,))
+
+					time.sleep(5)
+
+					# pass
+				else:
+					flag = False
+
+			# TEMP
+			# except Exception, e:
+			#
+			# 	raise e
+			#
+			# 	# close and recall this method in 5 secs
+			# 	next_c = self.get_next_index(curr_c, max_c)
+			#
+			# 	# MAJOR EDIT
+			# 	# url = urls[next_c]
+			# 	player = urls[next_c]
+			# 	url = player.url
+			#
+			#
+ 		# 		print 'Other Host Hosting.. Try  ' + str(url) + ' in 5 secs'
+			# 	self.s.enter(5, 1, self.loop_check, (urls, next_c,))
 
 			# hit the player button for some certain situations when the video don't play automatically
 			print 'hit play button now'

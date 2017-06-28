@@ -24,4 +24,11 @@ urlpatterns = [
 	url(r'^cms/$', video_views.cms, name='cms'),
     url(r'^cms/(?P<vid_id>[0-9]+)/$', video_views.video, name='video_detail'),
     url(r'^cms/open/$', video_views.open, name='video_open'),
+    url(r'^cms2/$', video_views.cms2, name='cms2'),
+    url(r'^cms2/(?P<vid_id>[0-9]+)/$', video_views.video2, name='video_detail2'),
+    url(r'^api/open$', video_views.ajax_open, name='video_ajax_open'),
+    url(r'^api/update$', video_views.ajax_update, name='video_ajax_update'),
+    url(r'^api/trim$', video_views.ajax_trim, name='video_ajax_trim'),
+    url(r'^api/upload$', video_views.ajax_upload, name='video_ajax_upload'),
+    url(r'^api/info$', video_views.ajax_info, name='video_ajax_info'),
 ]

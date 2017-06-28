@@ -1,99 +1,99 @@
-[INFO  - 2017-03-17T03:46:19.839Z] GhostDriver - Main - running on port 59761
-[INFO  - 2017-03-17T03:46:20.745Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
-[INFO  - 2017-03-17T03:46:20.745Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.customHeaders:  - {}
-[INFO  - 2017-03-17T03:46:20.745Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
-[INFO  - 2017-03-17T03:46:20.745Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 48af8660-0ac4-11e7-b2ad-4dcbc6745c00
-[ERROR - 2017-03-17T03:46:22.098Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.onError - msg: NETWORK_ERR: XMLHttpRequest Exception 101: A network error occurred in synchronous requests.
+[INFO  - 2017-05-20T05:13:00.604Z] GhostDriver - Main - running on port 42869
+[INFO  - 2017-05-20T05:13:01.530Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2017-05-20T05:13:01.530Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.customHeaders:  - {}
+[INFO  - 2017-05-20T05:13:01.530Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2017-05-20T05:13:01.530Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: ff087d80-3d1a-11e7-a111-619f92076ed5
+[ERROR - 2017-05-20T05:13:03.444Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.onError - msg: NETWORK_ERR: XMLHttpRequest Exception 101: A network error occurred in synchronous requests.
 
   phantomjs://platform/console++.js:263 in error
-[ERROR - 2017-03-17T03:46:22.098Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.onError - stack:
-  send (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+[ERROR - 2017-05-20T05:13:03.444Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.onError - stack:
+  send (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtension_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtension_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
 
   phantomjs://platform/console++.js:263 in error
-[ERROR - 2017-03-17T03:46:22.099Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.onError - msg: NETWORK_ERR: XMLHttpRequest Exception 101: A network error occurred in synchronous requests.
+[ERROR - 2017-05-20T05:13:03.444Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.onError - msg: NETWORK_ERR: XMLHttpRequest Exception 101: A network error occurred in synchronous requests.
 
   phantomjs://platform/console++.js:263 in error
-[ERROR - 2017-03-17T03:46:22.099Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.onError - stack:
-  send (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+[ERROR - 2017-05-20T05:13:03.444Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.onError - stack:
+  send (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtension_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtension_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
 
   phantomjs://platform/console++.js:263 in error
-[ERROR - 2017-03-17T03:46:22.099Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.onError - msg: NETWORK_ERR: XMLHttpRequest Exception 101: A network error occurred in synchronous requests.
+[ERROR - 2017-05-20T05:13:03.444Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.onError - msg: NETWORK_ERR: XMLHttpRequest Exception 101: A network error occurred in synchronous requests.
 
   phantomjs://platform/console++.js:263 in error
-[ERROR - 2017-03-17T03:46:22.099Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.onError - stack:
-  send (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+[ERROR - 2017-05-20T05:13:03.444Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.onError - stack:
+  send (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtension_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtension_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
 
   phantomjs://platform/console++.js:263 in error
-[ERROR - 2017-03-17T03:46:22.099Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.onError - msg: NETWORK_ERR: XMLHttpRequest Exception 101: A network error occurred in synchronous requests.
+[ERROR - 2017-05-20T05:13:03.445Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.onError - msg: NETWORK_ERR: XMLHttpRequest Exception 101: A network error occurred in synchronous requests.
 
   phantomjs://platform/console++.js:263 in error
-[ERROR - 2017-03-17T03:46:22.099Z] Session [48af8660-0ac4-11e7-b2ad-4dcbc6745c00] - page.onError - stack:
-  send (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  onerror (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+[ERROR - 2017-05-20T05:13:03.445Z] Session [ff087d80-3d1a-11e7-a111-619f92076ed5] - page.onError - stack:
+  send (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  onerror (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
   send (:0)
-  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  findInstalledExtension_ (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
-  (anonymous function) (https://web-cdn.ttvnw.net/global-215cd4828650a6b990b8d623442d4905.js:17)
+  isExtensionInstalled_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtensionHelper_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  findInstalledExtension_ (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
+  (anonymous function) (https://web-cdn.ttvnw.net/global-e0bc9ff92d6a733d8bdacb4cd69b8bb3.js:17)
 
   phantomjs://platform/console++.js:263 in error

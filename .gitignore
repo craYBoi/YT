@@ -1,4 +1,8 @@
-ytow/static/links/*
+\ytow/static/links/*
 ytowenv/
 ytow/static/screenshots/
 video/migrations/
+ytow/static/mnist
+ytow/static/thumbnails
+ytow/static/links2
+ytow/static/screenshots2

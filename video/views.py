@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic import FormView
 from django.shortcuts import redirect
+from django.http import JsonResponse
+
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -10,7 +14,7 @@ import os
 import string
 
 import core
-from .models import Ytvideo, Player, Vidcue, Hero
+from .models import Ytvideo, Player, Vidcue, Hero, Video, Videocue, Videosc
 from .utils import mass_screenshot
 
 def capture(request):
@@ -190,6 +194,36 @@ def cms(request):
 	return render(request, 'cms.html', context)
 
 
+def cms2(request):
+
+	# delete video
+	if request.method == 'POST' and request.POST.get('video_id'):
+
+		video_pk = request.POST.get('video_id')
+		vid = Video.objects.get(pk=video_pk)
+
+		vid.delete_vid()
+
+
+	videos = Video.objects.filter(is_downloaded=True).filter(is_processed=True)
+
+	paginator = Paginator(videos, 10)
+	page = request.GET.get('page')
+
+	try:
+		videos = paginator.page(page)
+	except PageNotAnInteger:
+		videos = paginator.page(1)
+	except EmptyPage:
+		videos = paginator.page(paginator.num_pages)
+
+	context = {
+		'videos': videos,
+	}
+
+
+	return render(request, 'cms2.html', context)
+
 def video(request, vid_id):
 
 	vid = Ytvideo.objects.get(pk=vid_id)
@@ -199,6 +233,64 @@ def video(request, vid_id):
 
 
 	return render(request, 'video.html', context)
+
+def video2(request, vid_id):
+
+	vid = Video.objects.get(pk=vid_id)
+	cues = vid.videocue_set.all()
+
+	# print cues
+	context = {
+		'video': vid,
+		'cues': cues,
+	}
+
+	# open video
+	if request.method == 'GET' and request.GET.get('video_id'):
+		r = vid.open_vid()
+
+	# update video cues
+	if request.method == 'POST' and request.POST.get('videocue_start'):
+		videocue_pk = request.POST.get('videocue_id')
+		videocue_start = request.POST.get('videocue_start')
+		videocue_end = request.POST.get('videocue_end')
+		videocue = Videocue.objects.get(pk=videocue_pk)
+
+		# print videocue_pk, videocue_start, videocue_end
+		videocue.save_cue(videocue_start, videocue_end)
+		videocue.is_updated = True
+		videocue.save()
+
+
+	# trim
+	if request.method == 'POST' and request.POST.get('videocue_trim'):
+		videocue_pk = request.POST.get('videocue_id')
+		videocue = Videocue.objects.get(pk=videocue_pk)
+		videocue.trim()
+
+	# title, hero and desc
+	if request.method == 'POST' and request.POST.get('videocue_title'):
+		videocue_pk = request.POST.get('videocue_id')
+		videocue = Videocue.objects.get(pk=videocue_pk)
+
+		videocue_title = request.POST.get('videocue_title')
+		videocue_hero = request.POST.get('videocue_hero')
+
+		videocue.title = videocue_title
+		videocue.hero = videocue_hero
+		videocue.desc = videocue.get_desc()
+		videocue.save()
+
+	# upload
+	if request.method == 'POST' and request.POST.get('videocue_upload'):
+		videocue_pk = request.POST.get('videocue_id')
+		videocue = Videocue.objects.get(pk=videocue_pk)
+
+		videocue.is_uploaded = True
+		videocue.save()
+		videocue.upload()
+
+	return render(request, 'video2.html', context)
 
 
 def open(request):
@@ -214,3 +306,108 @@ def open(request):
 
 
 	return render(request, 'video.html', context)
+
+
+@csrf_exempt
+def ajax_open(request):
+
+	print request.POST
+	if request.POST:
+		# pk = request.POST.get('video_id')
+		# vidcue = Videocue.objects.get(pk=int(pk))
+		# vid = vidcue.video
+
+		pk = request.POST.get('video_id')
+		vid = Video.objects.get(pk=int(pk))
+
+		r = vid.open_vid()
+
+		data = {
+			'success': 1,
+		}
+
+		return JsonResponse(data)
+
+
+@csrf_exempt
+def ajax_update(request):
+
+	if request.POST:
+		pk = request.POST.get('video_id')
+		vidcue = Videocue.objects.get(pk=int(pk))
+
+		vidcue_start = request.POST.get('videocue_start')
+		vidcue_end = request.POST.get('videocue_end')
+
+		vidcue.save_cue(vidcue_start, vidcue_end)
+		vidcue.is_updated = True
+		vidcue.save()
+
+		data = {
+			'success': 1,
+		}
+
+		return JsonResponse(data)
+
+
+@csrf_exempt
+def ajax_trim(request):
+
+	print request.POST
+
+	data = {}
+
+	if request.POST:
+		pk = request.POST.get('video_id')
+		vidcue = Videocue.objects.get(pk=int(pk))
+
+		r = vidcue.trim()
+
+		if r:
+			data['success'] = 1
+
+		return JsonResponse(data)
+
+
+@csrf_exempt
+def ajax_upload(request):
+
+	print request.POST
+
+	data = {}
+
+	if request.POST:
+		pk = request.POST.get('video_id')
+		vidcue = Videocue.objects.get(pk=int(pk))
+
+		r = vidcue.upload()
+
+		if r:
+			data['success'] = 1
+
+		return JsonResponse(data)
+
+
+@csrf_exempt
+def ajax_info(request):
+
+	print request.POST
+
+	data = {}
+
+	if request.POST:
+		pk = request.POST.get('video_id')
+		vidcue = Videocue.objects.get(pk=int(pk))
+		vidcue_hero = request.POST.get('video_hero')
+		vidcue_title = request.POST.get('video_title')
+
+		vidcue.title = vidcue_title
+		vidcue.hero = vidcue_hero
+		vidcue.desc = vidcue.get_desc()
+		vidcue.save()
+
+		data['vidcue_title'] = vidcue.title
+		data['vidcue_hero'] = vidcue.hero
+		data['vidcue_desc'] = vidcue.desc
+
+		return JsonResponse(data)
